@@ -1,6 +1,9 @@
 # GoNginxConf
 
-GoNginxConf is a library that parses Nginx configurations, enabling you to manipulate and regenerate your Nginx config files within your Go applications. GoNginxConf uses [Participle v2](https://github.com/alecthomas/participle) library under the hood.
+**GoNginxConf** is a Go library for parsing, modifying, and regenerating Nginx configuration files.  
+It makes it easy to work with Nginx config blocks and directives programmatically within your Go applications.
+
+Powered by [Participle v2](https://github.com/alecthomas/participle) under the hood.
 
 ## Install
 ```
