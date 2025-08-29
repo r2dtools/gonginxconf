@@ -7,6 +7,19 @@ import (
 	"github.com/alecthomas/participle/v2/lexer"
 )
 
+const (
+	newLine            = `[\r\n]+`
+	whitespace         = `[^\S\r\n]+`
+	comment            = `(?:#)[^\n]*\n?`
+	ident              = `[\w\-.\/]+`
+	stringDoubleQuoted = `"(?:\\"|[^"])*"`
+	stringSingleQuoted = `'(?:\\'|[^'])*'`
+	expression         = `[^;{}#\s]+`
+	semicolon          = `;`
+	blockStart         = `{`
+	blockEnd           = `}`
+)
+
 type Config struct {
 	Entries []*Entry `@@*`
 }
@@ -173,28 +186,28 @@ func (p *RawParser) Parse(content string) (*Config, error) {
 func GetRawParser() (*RawParser, error) {
 	def := lexer.MustStateful(lexer.Rules{
 		"Root": {
-			{Name: `NewLine`, Pattern: `[\r\n]+`, Action: nil},
-			{Name: `whitespace`, Pattern: `[^\S\r\n]+`, Action: nil},
-			{Name: `Comment`, Pattern: `(?:#)[^\n]*\n?`, Action: nil},
-			{Name: "BlockEnd", Pattern: `}`, Action: nil},
-			{Name: `Ident`, Pattern: `[\w\-.\/]+`, Action: lexer.Push("IdentParse")},
+			{Name: `NewLine`, Pattern: newLine, Action: nil},
+			{Name: `whitespace`, Pattern: whitespace, Action: nil},
+			{Name: `Comment`, Pattern: comment, Action: nil},
+			{Name: "BlockEnd", Pattern: blockEnd, Action: nil},
+			{Name: `Ident`, Pattern: ident, Action: lexer.Push("Ident")},
 		},
-		"IdentParse": {
-			{Name: `NewLine`, Pattern: `[\r\n]+`, Action: nil},
-			{Name: `whitespace`, Pattern: `[^\S\r\n]+`, Action: nil},
-			{Name: `StringDoubleQuoted`, Pattern: `"[^"]*"`, Action: nil},
-			{Name: `StringSingleQuoted`, Pattern: `'[^']*'`, Action: nil},
-			{Name: "Semicolon", Pattern: `;`, Action: lexer.Pop()},
-			{Name: "BlockStart", Pattern: `{`, Action: lexer.Pop()},
-			{Name: "BlockEnd", Pattern: `}`, Action: lexer.Pop()},
-			{Name: "Expression", Pattern: `[^;{}#\s]+`, Action: nil},
-			{Name: `Comment`, Pattern: `(?:#)[^\n]*\n?`, Action: nil},
+		"Ident": {
+			{Name: `NewLine`, Pattern: newLine, Action: nil},
+			{Name: `whitespace`, Pattern: whitespace, Action: nil},
+			{Name: `StringDoubleQuoted`, Pattern: stringDoubleQuoted, Action: nil},
+			{Name: `StringSingleQuoted`, Pattern: stringSingleQuoted, Action: nil},
+			{Name: "Semicolon", Pattern: semicolon, Action: lexer.Pop()},
+			{Name: "BlockStart", Pattern: blockStart, Action: lexer.Pop()},
+			{Name: "BlockEnd", Pattern: blockEnd, Action: lexer.Pop()},
+			{Name: "Expression", Pattern: expression, Action: nil},
+			{Name: `Comment`, Pattern: comment, Action: nil},
 		},
 	})
 
 	participleParser, err := participle.Build[Config](
 		participle.Lexer(def),
-		participle.UseLookahead(50),
+		participle.UseLookahead(100),
 	)
 
 	if err != nil {
