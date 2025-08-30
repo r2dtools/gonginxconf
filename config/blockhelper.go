@@ -159,12 +159,6 @@ func newBlock(container entryContainer, config *Config, name string, parameters 
 	return block
 }
 
-func deleteBlockByName(c entryContainer, name string) {
-	deleteBlockEntityContainer(c, func(block *rawparser.BlockDirective) bool {
-		return block.Identifier == name
-	})
-}
-
 func deleteBlock(c entryContainer, block Block) {
 	deleteBlockEntityContainer(c, func(rawBlock *rawparser.BlockDirective) bool {
 		return block.rawBlock == rawBlock
