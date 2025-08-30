@@ -15,8 +15,6 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-var repeatableDirectives = []string{"server_name", "listen", "include", "rewrite", "add_header"}
-
 var ErrInvalidDirective = errors.New("entry is not a directive")
 
 type Config struct {
