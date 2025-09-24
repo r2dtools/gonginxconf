@@ -3,16 +3,16 @@ package config
 import (
 	"errors"
 	"fmt"
+	"maps"
 	"os"
 	"path"
 	"path/filepath"
-	"sort"
+	"slices"
 	"strings"
 
 	"github.com/r2dtools/gonginxconf/internal/rawdumper"
 	"github.com/r2dtools/gonginxconf/internal/rawparser"
 	"github.com/unknwon/com"
-	"golang.org/x/exp/maps"
 )
 
 var ErrInvalidDirective = errors.New("entry is not a directive")
@@ -65,8 +65,8 @@ func (c *Config) FindUpstreamBlocksByName(upstreamName string) []UpstreamBlock {
 func (c *Config) FindDirectives(directiveName string) []Directive {
 	var directives []Directive
 
-	keys := maps.Keys(c.parsedFiles)
-	sort.Strings(keys)
+	mKeys := maps.Keys(c.parsedFiles)
+	keys := slices.Sorted(mKeys)
 
 	for _, key := range keys {
 		tree, ok := c.parsedFiles[key]
@@ -89,8 +89,8 @@ func (c *Config) FindDirectives(directiveName string) []Directive {
 func (c *Config) FindBlocks(blockName string) []Block {
 	var blocks []Block
 
-	keys := maps.Keys(c.parsedFiles)
-	sort.Strings(keys)
+	mKeys := maps.Keys(c.parsedFiles)
+	keys := slices.Sorted(mKeys)
 
 	for _, key := range keys {
 		tree, ok := c.parsedFiles[key]

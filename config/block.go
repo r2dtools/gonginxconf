@@ -1,11 +1,11 @@
 package config
 
 import (
+	"slices"
 	"strings"
 
 	"github.com/r2dtools/gonginxconf/internal/rawdumper"
 	"github.com/r2dtools/gonginxconf/internal/rawparser"
-	"golang.org/x/exp/slices"
 )
 
 const (
