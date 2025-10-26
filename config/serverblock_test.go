@@ -146,16 +146,16 @@ func TestDumpServerBlock(t *testing.T) {
 
 	expectedContent :=
 		`server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name .example.com;
+	listen 443 ssl http2;
+	listen [::]:443 ssl http2;
+	server_name .example.com;
 
-    # SSL
-    # Some comment
-    ssl_certificate /opt/webmng/test/certificate/example.com.crt;    # inline comment
-    ssl_certificate_key /opt/webmng/test/certificate/example.com.key;
-    ssl_trusted_certificate /opt/webmng/test/certificate/example.com.issuer.crt;
-    return 301 https://www.example.com$request_uri;
+	# SSL
+	# Some comment
+	ssl_certificate /opt/webmng/test/certificate/example.com.crt;	# inline comment
+	ssl_certificate_key /opt/webmng/test/certificate/example.com.key;
+	ssl_trusted_certificate /opt/webmng/test/certificate/example.com.issuer.crt;
+	return 301 https://www.example.com$request_uri;
 }`
 	assert.Equal(t, expectedContent, content)
 }

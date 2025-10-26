@@ -96,8 +96,8 @@ func TestDumpLocationBlock(t *testing.T) {
 	content := locationBlock.Dump()
 
 	expectedContent :=
-		`location / {    # inline comment
-    return 301 https://www.example.com$request_uri;
+		`location / {	# inline comment
+	return 301 https://www.example.com$request_uri;
 }`
 	assert.Equal(t, expectedContent, content)
 }

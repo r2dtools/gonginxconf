@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	tab   = "    "
+	tab   = "	"
 	space = " "
 )
 
